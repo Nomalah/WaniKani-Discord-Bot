@@ -38,7 +38,7 @@ async function sendMessage() {
 }
 
 client.once('ready', async () => {
-    let scheduledMessage = new cron.CronJob('0 0 12/2 * * *', () => sendMessage());
+    let scheduledMessage = new cron.CronJob('0 12 */2 * * *', () => sendMessage());
     sendMessage();
     
     // for (const token of WANIKANI_TOKENS) {
