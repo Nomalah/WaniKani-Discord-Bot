@@ -35,6 +35,9 @@ async function sendMessage() {
     }
     standings.setDescription(description);
     channel.send({ embeds: [standings] });
+
+    console.log("WaniKani Standings: " + new Date().toLocaleDateString())
+    console.log(description);
 }
 
 client.once('ready', async () => {
