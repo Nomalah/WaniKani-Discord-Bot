@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 import * as wanikani from "./wanikani.js";
-import cron from "cron";
+import { CronJob } from "cron";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -27,10 +27,10 @@ async function sendMessage() {
         let userStats = await wanikani.statsForDay(token);
         const user = await wanikani.getUser(token);
         description += `**[${user.username}'s](${user.profile_url})** [Level ${user.level}]:\n`;
-        description += `  -> Reviews Completed: ${userStats["reviewsCompleted"]}\n`;
-        description += `  -> Reviews Remaining: ${userStats["reviewsPending"]}\n`;
-        description += `  -> Lessons Completed: ${userStats["lessonsCompleted"]}\n`;
-        description += `  -> Lessons Remaining: ${userStats["lessonsPending"]}\n`;
+        description += `  -> Reviews Updated: ${userStats.reviewsCompleted}\n`;
+        description += `  -> Reviews Remaining: ${userStats.reviewsPending}\n`;
+        description += `  -> Lessons Completed: ${userStats.lessonsCompleted}\n`;
+        description += `  -> Lessons Remaining: ${userStats.lessonsPending}\n`;
         description += "\n";
     }
     standings.setDescription(description);
@@ -38,14 +38,8 @@ async function sendMessage() {
 }
 
 client.once('ready', async () => {
-    let scheduledMessage = new cron.CronJob('0 12 */2 * * *', () => sendMessage());
+    const _ = new CronJob('0 12 * * * *', () => sendMessage(), null, true, "America/New_York");
     sendMessage();
-    
-    // for (const token of WANIKANI_TOKENS) {
-    //     await wanikani.statsForDay(token);
-    // }
-    // When you want to start it, use:
-    scheduledMessage.start()
 });
 
 client.login(DISCORD_TOKEN);
