@@ -41,7 +41,7 @@ async function sendMessage() {
 }
 
 client.once('ready', async () => {
-    const _ = new CronJob('0 12 * * * *', () => sendMessage(), null, true, "America/New_York");
+    const _ = new CronJob('0 12 * * *', () => sendMessage(), null, true, "America/New_York");
     sendMessage();
 });
 
